@@ -1,33 +1,15 @@
 <?php
 
-$databasefile = 'volunteermanagement.db'
-$open = false
-$dbconn = null
-
 class volunteermanagementsystem extends SQLite3 {
-    function open_db() {
-        if $open {
-            return;
-        }
-        $dbconn = new SQLite3($databasefile);
-        $open = true;
-        return;
-    }
 
-    function close_db() {
-        if !$open {
-            return;
-        }
-        $dbconn->close();
-        $open = false;
+    $databasefile = 'volunteermanagement.db'
+
+    function __construct() {
+        $this->open($databasefile)
     }
 
     function add_volunteer($name, $username, $address, $phone, $email, $remoteaccessallowed) {
-        if !$open {
-            open_db();
-        }
-
-
+        $this->exec("INSERT INTO volunteers (name, username, address, phone, email, hours, remoteaccessallowed, under18, signedin) VALUES ($name, $username, $address, $phone, $email, $remoteaccessallowed, $under18, False)"
     }
 }
 

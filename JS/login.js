@@ -24,6 +24,14 @@ $(document).ready(function() {
 		$('#time').val(""+hour+":"+min);
 	});
 
+	var ajaxRequest = null;
+
+	var abortExistingRequest = function(request) {
+		if(request != null) {
+			request.abort();
+		}
+	}
+
 	var ajaxObject = function(that){
 		return {
 			method: "post",
@@ -36,10 +44,12 @@ $(document).ready(function() {
 		};
 	};
 
-	$('.username').focusout(function() {
+	$('.username').keyup(function() {
 		var that = $(this);
-		$.ajax(ajaxObject(that))
-		.success(function(username_exists) {
+		abortExistingRequest(ajaxRequest);
+		ajaxRequest = $.ajax(ajaxObject(that));
+		ajaxRequest.success(function(username_exists) {
+			if(that.val() == "") return;
 			if(that.attr('id') == "username_registration" && username_exists) {
 				that.next().removeClass('hidden');
 			} else if(that.attr('id') == "username_login") {
@@ -55,10 +65,11 @@ $(document).ready(function() {
 
 	$('#register-form').submit(function() {
 		var that = $(this);
-		$.ajax({
+		abortExistingRequest(ajaxRequest);
+		ajaxRequest = $.ajax({
 			name: that.attr('name')
-		})
-		.success(function(msg) {
+		});
+		ajaxRequest.success(function(msg) {
 			if(msg) {
 				$('#username_login').val($('#username_login').val());
 				$('#signin-submit').removeClass('disabled');

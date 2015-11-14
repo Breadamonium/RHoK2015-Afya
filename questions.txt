@@ -3,3 +3,9 @@
 - What kind of visuals do you want?
 
 - Can we allow and disallow remote sign-in on a per person basis? Additionally, is there a way for people to sign-in on site as a backup?
+
+
+
+Queries we need:
+- Given time range, make table of people/group and aggregate hours worked
+- Given name/group, make table of all worked time entries

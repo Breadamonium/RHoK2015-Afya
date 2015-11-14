@@ -1,6 +1,3 @@
-<?php
-	include ("volunteermanagement.php");
-?>
 <!DOCTYPE html>
 <html class="full" lang="en">
 <!-- Make sure the <html> tag is set to the .full CSS class. Change the background image in the full.css file. -->
@@ -74,15 +71,7 @@
 
     <!-- Put your page content here! -->
 	<div class="container">
-		<div class="btn-group" role="group" aria-label="...">
-		  <button type="button" class="btn btn-default">Left</button>
-		  <button type="button" class="btn btn-default">Middle</button>
-		  <button type="button" class="btn btn-default">Right</button>
-		</div>
-		<?php
-			$db = new volunteermanagementsystem;
-			$db->{'new_volunteer("dan", "austin", "1283971", 4102457783, "yp89@cornell.edu", false, false )'}();
-		?>
+		
 	</div>
 
     <!-- jQuery -->

@@ -40,9 +40,11 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
-                <form id="login-form" action="http://phpoll.com/login/process" method="post" role="form" style="display: block;">
+                <form id="login-form" name="login-form" role="form" style="display: block;">
+                  <p id="login-success-msg" class="hidden bg-success">Thanks for registering!</p>
                   <div class="form-group">
-                    <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+                    <input type="text" name="username" id="username_login" tabindex="1" class="form-control username" placeholder="Username" value="">
+                    <p class="hidden bg-danger">Username does not exist</p>
                   </div>
                   <div class="row">
                     <div class="col-sm-9">
@@ -60,19 +62,10 @@
                   <div class="form-group">
                     <div class="row">
                       <div class="col-sm-6">
-                        <input type="submit" name="signin-submit" id="sigin-submit" tabindex="4" class="form-control btn btn-login" value="Sign In">
+                        <input type="submit" name="signin-submit" id="signin-submit" tabindex="4" class="form-control btn btn-login disabled" value="Sign In" />
                       </div>
                       <div class="col-sm-6">
-                        <input type="submit" name="signout-submit" id="signout-submit" tabindex="4" class="form-control btn btn-login" value="Sign Out">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <div class="text-center">
-                          <a href="http://phpoll.com/recover" tabindex="5" class="forgot-password">Help?</a>
-                        </div>
+                        <input type="submit" name="signout-submit" id="signout-submit" tabindex="4" class="form-control btn btn-login disabled" value="Sign Out" />
                       </div>
                     </div>
                   </div>
@@ -88,23 +81,30 @@
 
 
 
-                <form id="register-form" action="http://phpoll.com/register/process" method="post" role="form" style="display: none;">
+                <form id="register-form" name="register-form" role="form" style="display: none;">
                   <div class="form-group">
-                    <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+                    <input type="text" name="username" id="username_registration" tabindex="1" class="form-control username" placeholder="Username" value="" />
+                    <p class="hidden bg-danger">Username already taken</p>
                   </div>
                   <div class="form-group">
-                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">
+                    <input type="text" name="firstname" id="firstname" tabindex="1" class="form-control" placeholder="First Name" value="" />
                   </div>
                   <div class="form-group">
-                    <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                    <input type="text" name="lastname" id="lastname" tabindex="1" class="form-control" placeholder="Last Name" value="" />
                   </div>
                   <div class="form-group">
-                    <input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">
+                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="" />
+                  </div>
+                  <div class="form-group">
+                    <input type="text" name="phonenumber" id="phonenumber" tabindex="1" class="form-control" placeholder="Phone Number" value="" />
+                  </div>
+                  <div class="checkbox">
+                    <label><input type="checkbox" name="addtolistserv" /> Add me to your listserv</label>
                   </div>
                   <div class="form-group">
                     <div class="row">
                       <div class="col-sm-6 col-sm-offset-3">
-                        <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
+                        <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now" />
                       </div>
                     </div>
                   </div>
@@ -119,31 +119,12 @@
       </div>
     </div>
   </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </body>
 </html>
+
+<!--
+
+
+
+
+-->

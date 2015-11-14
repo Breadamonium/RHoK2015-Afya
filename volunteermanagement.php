@@ -2,10 +2,8 @@
 
 class volunteermanagementsystem extends SQLite3 {
 
-    $databasefile = 'volunteermanagement.db'
-
     function __construct() {
-        $this->open($databasefile)
+        $this->open("./volunteermanagement.db");
     }
 
     function new_volunteer($name, $username, $address, $phone, $email, $remoteaccessallowed, $under18) {
@@ -18,31 +16,19 @@ class volunteermanagementsystem extends SQLite3 {
         return;
     }
 
-    // Note that groupbool is true for groups, false for individuals.
-    // Returns a timeentryid number (to associate with a timeout).
-    function new_timein($timein, $user, $groupsize, $name, $groupbool) {
-        if $groupbool {
-            $groupid = $this->execute("SELECT groupid FROM groups WHERE groupname=$name");
-            $this->exec("INSERT INTO timesheet (timein, groupsize, groupid) VALUES ($timein, $groupsize, $groupid)");
-        }
-        else {
-            $userid = $this->execute("SELECT userid FROM volunteers WHERE username=$name");
-            $this->exec("INSERT INTO timesheet (timein, userid, groupsize) VALUES ($timein, $userid, 1)");
-        }
-        return $this->lastInsertRowID;
-    }
-
-    // Stamps a timeout $timeout onto a time entry designated by $timeid.
-    function new_timeout($timeout, $timeid) {
-        $this->exec("UPDATE timesheet SET timeout=$timeout, totaltime=groupsize*($timeout-timein) WHERE timeentryid=$timeid");
-        return;
-    }
-
     // Returns true iff $username is already within the volunteers table
     function username_exists($username) {
-        if $this->execute("SELECT COUNT(*) FROM volunteers WHERE username=$username")->fetchArray(SQLITE3_NUM)[0] == 0 {
-            return false;
+		
+		$returned_set = $database->query("SELECT COUNT(*) FROM volunteers WHERE username=$username");
+
+        while($result = $returned_set->fetchArray()) {
+            $returned_set->fetchArray();
+			$count = $result[0];
+			if($count ==0){
+				return false;
+			}
         }
+		
         return true;
     }
 

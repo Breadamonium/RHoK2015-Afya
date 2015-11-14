@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+
+
+
+      var sampleData= [["Church", 10], ["Individuals", 50], ["University", 3]];
+
+      function drawPie(data) {
+        var header = ['Group', 'Total Hours'];
+        data.unshift(header);
+
+        var data = google.visualization.arrayToDataTable(data);
+
+        var options = {
+          title: 'Breakdown by Group'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+
+
+
+      google.setOnLoadCallback(function(){
+
+        drawPie(sampleData);
+
+
+      });
+
+
+
+    </script>
+  </head>
+  <body>
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>

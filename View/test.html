@@ -19,8 +19,8 @@
       var sampleData= [["Church", 10], ["Individuals", 50], ["University", 3], ["austin", 1]];
       var sampleData2=[];
 
-      for (var i=0; i<31; i++){
-        var arr= [(i+1), Math.floor(Math.random()*100+1)];
+      for (var i=0; i<30; i++){
+        var arr= [new Date(2003, 5, i+1), Math.floor(Math.random()*100+1)];
         sampleData2.push(arr);
       }
 
@@ -43,16 +43,18 @@
       }
 
 
-     function drawLineChartMonth(data, id, groupName, month) {
+     function drawLineChartMonth(data, id, groupName) {
         var header = ['Day of the Month', groupName];
 
         data.unshift(header);
         var data = google.visualization.arrayToDataTable(data);
 
         var options = {
-          title: groupName+" Total Hours in "+month,
+          title: groupName+" Total Hours",
           //curveType: 'function',
-          legend: { position: 'bottom' }
+          legend: { position: 'bottom' },
+          explorer:{axis: 'horizontal', maxZoomOut: 2},
+          vAxis: {title:"Hours"}
         };
 
         var chart = new google.visualization.LineChart(document.getElementById(id));
@@ -64,7 +66,7 @@
       google.setOnLoadCallback(function(){
 
         drawPie(sampleData, "piechart");
-        drawLineChartMonth(sampleData2, "linechart", "Cornell Students", "June 2017")
+        drawLineChartMonth(sampleData2, "linechart", "Cornell Students")
 
       });
 

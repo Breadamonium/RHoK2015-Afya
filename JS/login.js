@@ -15,4 +15,14 @@ $(function() {
 		e.preventDefault();
 	});
 
+   $('#currTime').on('click', function () {
+   	var today = new Date();
+   	var hour = today.getHours();
+   	var min = today.getMinutes();
+
+
+    $('#time').val(""+hour+":"+min);
+   })
+
+
 });

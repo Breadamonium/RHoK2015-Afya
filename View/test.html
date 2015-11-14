@@ -4,31 +4,67 @@
     <script type="text/javascript">
       google.load("visualization", "1", {packages:["corechart"]});
 
+        /*
+        4D4D4D (gray)
+        5DA5DA (blue)
+        FAA43A (orange)
+        60BD68 (green)
+        F17CB0 (pink)
+        B2912F (brown)
+        B276B2 (purple)
+        DECF3F (yellow)
+        F15854 (red)*/
+
+      var colors= ['#5DA5DA', '#FAA43A', '#60BD68', '#F17CB0', '#B2912F', '#B276B2', '#DECF3F', '#F15854', '#4d4d4d'];
+      var sampleData= [["Church", 10], ["Individuals", 50], ["University", 3], ["austin", 1]];
+      var sampleData2=[];
+
+      for (var i=0; i<31; i++){
+        var arr= [(i+1), Math.floor(Math.random()*100+1)];
+        sampleData2.push(arr);
+      }
 
 
-      var sampleData= [["Church", 10], ["Individuals", 50], ["University", 3]];
-
-      function drawPie(data) {
+      function drawPie(data, id) {
         var header = ['Group', 'Total Hours'];
         data.unshift(header);
 
         var data = google.visualization.arrayToDataTable(data);
 
         var options = {
-          title: 'Breakdown by Group'
+          title: 'Breakdown by Group',
+          colors: colors,
+          sliceVisibilityThreshold: 0.01
         };
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        var chart = new google.visualization.PieChart(document.getElementById(id));
 
         chart.draw(data, options);
       }
 
 
+     function drawLineChartMonth(data, id, groupName, month) {
+        var header = ['Day of the Month', groupName];
+
+        data.unshift(header);
+        var data = google.visualization.arrayToDataTable(data);
+
+        var options = {
+          title: groupName+" Total Hours in "+month,
+          //curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById(id));
+
+        chart.draw(data, options);
+      }
+
 
       google.setOnLoadCallback(function(){
 
-        drawPie(sampleData);
-
+        drawPie(sampleData, "piechart");
+        drawLineChartMonth(sampleData2, "linechart", "Cornell Students", "June 2017")
 
       });
 
@@ -38,5 +74,6 @@
   </head>
   <body>
     <div id="piechart" style="width: 900px; height: 500px;"></div>
+    <div id="linechart" style="width: 900px; height: 500px;"></div>
   </body>
 </html>

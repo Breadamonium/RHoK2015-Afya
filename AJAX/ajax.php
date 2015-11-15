@@ -2,17 +2,29 @@
 require ('../volunteermanagement.php');
 if(!empty($_POST['name'])) {
 	$name = $_POST['name'];
-	if($name == 'username') {
-		try {
-			$db = new volunteermanagementsystem();
-			
-		} catch (Exception $e){
-			echo "Cannot connect to database.";
-		}
-		echo true;
-	}
-	if($name == 'register-form') {
-		echo true;
+	switch($name) {
+		case 'username':
+			try {
+				$db = new volunteermanagementsystem('../volunteerdatabase.db');
+
+			} catch (Exception $e){
+				echo "Error";
+			}
+			echo $db->{'username_exists'}($_POST['value']);
+			return;
+		case 'email':
+			try {
+				$db = new volunteermanagementsystem('../volunteerdatabase.db');
+
+			} catch (Exception $e){
+				echo "Error";
+			}
+			echo $db->{'username_exists'}($_POST['value']);
+			return;
+		case 'phonenumber':
+			return;
+		case 'register-form':
+			return;
 	}
 }
 

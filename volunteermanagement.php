@@ -28,7 +28,7 @@ class volunteermanagementsystem extends SQLite3 {
 
     // Returns true iff $username is currently signed in.
     function user_signedin($username) {
-        $result = $this->{query}("SELECT signedin FROM volunteers WHERE username='$username'");
+        $result = $this->{query}("SELECT lasttimeid FROM volunteers WHERE username='$username'");
         $lasttimeid = $result->{fetchArray}()[0];
         if ($lasttimeid == Null) {
             return false;
@@ -38,7 +38,7 @@ class volunteermanagementsystem extends SQLite3 {
 
     // Returns true iff $groupname is currently signed in.
     function group_signedin($groupname) {
-        $result = $this->{query}("SELECT signedin FROM groups WHERE groupname='$groupname'");
+        $result = $this->{query}("SELECT lasttimeid FROM groups WHERE groupname='$groupname'");
         $lasttimeid = $result->{fetchArray}()[0];
         if ($lasttimeid == Null) {
             return false;
@@ -101,6 +101,7 @@ class volunteermanagementsystem extends SQLite3 {
         $result = $this->{query}("SELECT groupname, hours FROM groups");
         return $result->{fetchArray}();
     }
+
 
 }
 

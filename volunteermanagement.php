@@ -140,7 +140,7 @@ class volunteermanagementsystem extends SQLite3 {
 
     // Returns a timesheet for a user between a start date and end date.
     function get_user_timesheet($firstname, $lastname, $startdate=0, $enddate=9999999999) {
-        $result = $this->query("SELECT userid FROM volunteers WHERE firstname='$firstname' AND lastname='$lastname");
+        $userid = $this->query("SELECT userid FROM volunteers WHERE firstname='$firstname' AND lastname='$lastname");
         $result = $this->query("SELECT datetime(timein, 'unixepoch'), totaltime FROM timesheet WHERE timein>'$startdate' AND timeout<'$enddate' AND userid='$userid'");
         $result = $result->fetchArray();
         $i = 0;

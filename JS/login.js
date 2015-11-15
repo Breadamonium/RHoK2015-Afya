@@ -25,8 +25,7 @@ $(document).ready(function() {
 	});*/
 
 	var getTime = function() {
-		var today = new Date();
-		return today.UTC();
+		return Date.UTC();
 	};
 
 	var disableSignIn = true;

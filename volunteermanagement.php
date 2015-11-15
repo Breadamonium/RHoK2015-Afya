@@ -165,7 +165,7 @@ class volunteermanagementsystem extends SQLite3 {
         $arr = array();
         $i = 0;
         while ($curr != false) {
-            $utc_date = DateTime::createFromFormat('Y-m-d H:i:s', $curr[0], new DateTimeZone('UTC'));  
+            $utc_date = DateTime::createFromFormat('U', $curr[0]);  
             $new_date = $utc_date->{'setTimeZone'}(new DateTimeZone('America/New_York'));
             $arr[$i] = array($new_date->format('Y-m-d'), $curr[1]);
             $curr = $result->fetchArray();

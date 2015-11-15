@@ -44,16 +44,28 @@ $(document).ready(function() {
 		};
 	};
 
+	$('#username_registration').focusout(function() {
+		var that = $(this);
+		if(that.val().trim().length < 5 && that.val().trim().length > 0) {
+			that.next().html("Username needs be at least 5 characters.")
+			that.next().removeClass('hidden');
+		}
+	});
+
 	$('.username').keyup(function() {
 		var that = $(this);
+		if(that.val().trim().length < 5) return;
 		abortExistingRequest(ajaxRequest);
 		ajaxRequest = $.ajax(ajaxObject(that));
 		ajaxRequest.success(function(username_exists) {
+			console.log(username_exists);
 			if(that.val() == "") return;
 			if(that.attr('id') == "username_registration" && username_exists) {
+				that.next().html("Username already exists.")
 				that.next().removeClass('hidden');
 			} else if(that.attr('id') == "username_login") {
 				if(!username_exists) {
+					that.next().html("Username does not exist");
 					that.next().removeClass('hidden');
 				} else {
 					$('#signin-submit').removeClass("disabled");
@@ -63,11 +75,24 @@ $(document).ready(function() {
 		});
 	});
 
+	$('#grouplogincheck').click(function() {
+		if(this.checked) {
+			$('#grouplogin').removeClass('hidden');
+		} else {
+			$('#grouplogin').addClass('hidden');
+		}
+	});
+
 	$('#register-form').submit(function() {
 		var that = $(this);
 		abortExistingRequest(ajaxRequest);
 		ajaxRequest = $.ajax({
-			name: that.attr('name')
+			name: that.attr('name'),
+			firstname: $('#firstname').val(),
+			lastname: $('#lastname').val(),
+			email: $('#email').val(),
+			phonenumber: $('#phonenumber').val(),
+			isGroup: $('#groupregistrationcheck').prop('checked')
 		});
 		ajaxRequest.success(function(msg) {
 			if(msg) {
@@ -80,7 +105,7 @@ $(document).ready(function() {
 			}
 		});
 		return false;
-	})
+	});
 
 
 });

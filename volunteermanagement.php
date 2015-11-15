@@ -170,6 +170,7 @@ class volunteermanagementsystem extends SQLite3 {
     // Returns all of the info on a particular person.
     function get_user_info($firstname, $lastname) {
         $result = $this->query("SELECT * FROM volunteers WHERE firstname='$firstname' AND lastname='$lastname'");
+        return $result->fetchArray();
     }
 
 }

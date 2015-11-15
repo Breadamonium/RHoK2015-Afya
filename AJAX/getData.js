@@ -9,6 +9,9 @@ function abortExistingAjaxRequest() {
 	}
 }
 
+
+//Each function returns an AJAX object. Need to call the success() handler to get data.
+
 function get_user_hours(firstname, lastname) {
 	abortExistingAjaxRequest();
 	existingAjaxRequest = $.ajax({

@@ -220,12 +220,19 @@ $(document).ready(function() {
 		$('#username_login').keyup();
 		if(this.checked) {
 			$('#grouplogin').removeClass('hidden');
+			$('#username_login').attr("placeholder", "Group Name (Required)");
 		} else {
 			$('#grouplogin').addClass('hidden');
+			$('#username_login').attr("placeholder", "Username (Required)");
 		}
 	});
 
 	$('#groupregistrationcheck').click(function() {
+		if(this.checked) {
+			$('#username_registration').attr("placeholder", "Group Name (Required)");
+		} else {
+			$('#username_registration').attr("placeholder", "Username (Required)");
+		}
 		$('#username_registration').keyup();
 	});
 

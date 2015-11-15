@@ -42,7 +42,10 @@
             <div class="row">
               <div class="col-lg-12">
                 <form id="login-form" name="login-form" role="form" style="display: block;">
-                  <p id="login-success-msg" class="hidden bg-success">Thanks for registering!</p>
+                  <p id="login-success-msg" class="hidden bg-success"></p>
+                  <div class="checkbox">
+                    <label for="grouplogincheck"><input type="checkbox" name="grouplogincheck" id="grouplogincheck" /> I am representing a group</label>
+                  </div>
                   <div class="form-group">
                     <input type="text" name="username" id="username_login" tabindex="1" class="form-control username" placeholder="Username" value="">
                     <p class="hidden bg-danger"></p>
@@ -58,15 +61,12 @@
                         </ul>
                       </div>
                     </div>
-                    <div class="checkbox">
-                      <label for="grouplogincheck"><input type="checkbox" name="grouplogincheck" id="grouplogincheck" /> I am signing in as a group</label>
-                    </div>
                     <div id="grouplogin" class="hidden">
                       <div class="form-group">
                         <label>How many people are in your group?</label> <input type="number" name="numpeopleingroup" id="numpeopleingroup" class="form-control" min="1" value="1">
                       </div>
                     </div>
-                    <div class="row">
+                    <!--<div class="row">
                       <div class="col-sm-9">
                         <div class="form-group">
                           <input type="time" name="time" id="time" tabindex="2" class="form-control">
@@ -76,8 +76,7 @@
                         <button type="button" id="currTime" class="btn btn-primary" autocomplete="off"> Current Time
                         </button>
                       </div>
-                    </div>
-
+                    </div>-->
                     <div class="form-group">
                       <div class="row">
                         <div class="col-sm-6">
@@ -101,16 +100,19 @@
 
 
                   <form id="register-form" name="register-form" role="form" style="display: none;">
+                    <div class="checkbox">
+                      <label for="groupregistrationcheck"><input type="checkbox" name="groupregistrationcheck" id="groupregistrationcheck" /> I am registering for a group.</label>
+                    </div>
                     <div class="form-group">
-                      <input type="text" name="username" id="username_registration" tabindex="1" class="form-control username" placeholder="Username" value="" />
+                      <input type="text" name="username" id="username_registration" tabindex="1" class="form-control username" placeholder="Username (Required)" value="" required />
                       <p class="hidden bg-danger"></p>
                     </div>
                     <div class="form-group">
-                      <input type="text" name="firstname" id="firstname" tabindex="1" class="form-control" placeholder="First Name" value="" />
+                      <input type="text" name="firstname" id="firstname" tabindex="1" class="form-control" placeholder="First Name (Required)" value="" required />
                       <p class="hidden bg-danger"></p>
                     </div>
                     <div class="form-group">
-                      <input type="text" name="lastname" id="lastname" tabindex="1" class="form-control" placeholder="Last Name" value="" />
+                      <input type="text" name="lastname" id="lastname" tabindex="1" class="form-control" placeholder="Last Name (Required)" value="" required />
                     </div>
                     <div class="form-group">
                       <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="" />
@@ -119,8 +121,9 @@
                       <input type="text" name="phonenumber" id="phonenumber" tabindex="1" class="form-control" placeholder="Phone Number" value="" />
                       <p class="hidden bg-danger"></p>
                     </div>
-                    <div class="checkbox">
-                      <label for="groupregistrationcheck"><input type="checkbox" name="groupregistrationcheck" id="groupregistrationcheck" /> I am registering for a group.</label>
+                    <div class="form-group">
+                      <input type="text" name="findout" id="findout" tabindex="1" class="form-control" placeholder="How did you find out about us?" value="" />
+                      <p class="hidden bg-danger"></p>
                     </div>
                     <div class="checkbox">
                       <label for="ageregistrationcheck"><input type="checkbox" name="ageregistrationcheck" id="ageregistrationcheck" /> I am under 18 years old.</label>

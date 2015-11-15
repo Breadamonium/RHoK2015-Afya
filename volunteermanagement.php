@@ -2,16 +2,26 @@
 
 class volunteermanagementsystem extends SQLite3 {
 
-    function __construct() {
-        $this->open('./volunteerdatabase.db');
+    function __construct($path) {
+        $this->open($path);
     }
 
     function new_volunteer($firstname, $lastname, $username, $address, $phone, $email, $skillset, $category, $findout, $under18) {
-		$this->query("INSERT INTO volunteers (firstname, lastname, username, address, phone, email, hours, under18, skillset, category, findout) VALUES ('$firstname', '$lastname', '$username', '$address', '$phone', '$email', 0, '$under18', '$skillset', '$category', '$findout')");
+        try {
+		  $this->query("INSERT INTO volunteers (firstname, lastname, username, address, phone, email, hours, under18, skillset, category, findout) VALUES ('$firstname', '$lastname', '$username', '$address', '$phone', '$email', 0, '$under18', '$skillset', '$category', '$findout')");
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
     }
 
     function new_group($name, $contactname, $contactphone, $findout) {
-        $this->query("INSERT INTO groups (groupname, hours, contactname, contactphone, findout) VALUES ('$name', 0, '$contactname', '$contactphone', '$findout')");
+        try {
+            $this->query("INSERT INTO groups (groupname, hours, contactname, contactphone, findout) VALUES ('$name', 0, '$contactname', '$contactphone', '$findout')");
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
     }
 
     // Returns true iff $username is already within the volunteers table.
@@ -48,7 +58,7 @@ class volunteermanagementsystem extends SQLite3 {
     function user_signedin($username) {
         $result = $this->query("SELECT lasttimeid FROM volunteers WHERE username='$username'");
         $lasttimeid = $result->fetchArray()[0];
-        if ($lasttimeid == Null) {
+        if ($lasttimeid == null) {
             return false;
         }
         return true;
@@ -58,7 +68,7 @@ class volunteermanagementsystem extends SQLite3 {
     function group_signedin($groupname) {
         $result = $this->query("SELECT lasttimeid FROM groups WHERE groupname='$groupname'");
         $lasttimeid = $result->fetchArray()[0];
-        if ($lasttimeid == Null) {
+        if ($lasttimeid == null) {
             return false;
         }
         return true;
@@ -84,10 +94,10 @@ class volunteermanagementsystem extends SQLite3 {
 		return $newtime;
     }
 
-    function signin_group($groupname, $timein) {
+    function signin_group($groupname, $timein, $groupsize) {
         $result = $this->query("SELECT groupid FROM groups WHERE groupname='$groupname'");
         $groupid = $result->fetchArray()[0];
-        $this->query("INSERT INTO timesheet (timein, groupid, groupsize) VALUES ('$timein', '$groupid', 1)");
+        $this->query("INSERT INTO timesheet (timein, groupid, groupsize) VALUES ('$timein', '$groupid', $groupsize)");
         $result = $this->query("SELECT timeentryid FROM timesheet WHERE timein = '$timein' AND groupid= '$groupid'");
 		$timeid = $result->fetchArray()[0];
         $this->query("UPDATE groups SET lasttimeid='$timeid' WHERE groupid='$groupid'");
@@ -116,11 +126,6 @@ class volunteermanagementsystem extends SQLite3 {
         return array($groupname, $hours);
     }
 
-    function get_all_group_hours() {
-        $result = $this->query("SELECT groupname, hours FROM groups");
-        return $result->fetchArray();
-    }
-
     // Returns a table of volunteers and their total hours worked between startdate and enddate.
     function get_aggregate_user_hours($startdate=0, $enddate=9999999999) {
         $result = $this->query("SELECT firstname, lastname, sum(totaltime) FROM timesheet INNER JOIN volunteers ON timesheet.userid=volunteers.userid WHERE timein>'$startdate' AND timeout<'$enddate' AND groupid IS NULL");
@@ -129,7 +134,7 @@ class volunteermanagementsystem extends SQLite3 {
 
     // Returns a table of groups and their total hours worked between a start date and end date.
     function get_aggregate_group_hours($startdate=0, $enddate=9999999999) {
-        $result = $this->query("SELECT firstname, lastname, sum(totaltime) FROM timesheet INNER JOIN groups ON timesheet.groupid=groups.groupid WHERE timein>'$startdate' AND timeout<'$enddate' AND userid IS NULL");
+        $result = $this->query("SELECT groupname, sum(totaltime) FROM timesheet INNER JOIN groups ON timesheet.groupid=groups.groupid WHERE timein>'$startdate' AND timeout<'$enddate' AND userid IS NULL");
         return $result->fetchArray();
     }
 

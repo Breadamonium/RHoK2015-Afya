@@ -19,8 +19,8 @@ $(document).ready(function() {
 		var today = new Date();
 		var hour = today.getHours();
 		var min = today.getMinutes();
-
-
+		if(hour < 10) hour = "0" + hour;
+		if(min < 10) min = "0" + min;
 		$('#time').val(""+hour+":"+min);
 	});
 
@@ -81,6 +81,7 @@ $(document).ready(function() {
 		that.next().addClass('hidden');
 		ajaxRequest = $.ajax(ajaxObject(that));
 		ajaxRequest.success(function(username_exists) {
+			console.log(username_exists);
 			if(username_exists == "Error") {
 				addError(that, "There is a database error. Please try at another time.");
 			}
@@ -125,16 +126,25 @@ $(document).ready(function() {
 			return false;
 		}
 		ajaxRequest = $.ajax({
-			name: that.attr('name'),
-			firstname: $('#firstname').val(),
-			lastname: $('#lastname').val(),
-			email: $('#email').val(),
-			phonenumber: $('#phonenumber').val(),
-			isGroup: $('#groupregistrationcheck').prop('checked')
+			method: "post",
+			url: "../AJAX/ajax.php",
+			data: {
+				name: that.attr('name'),
+				username: $('#username_registration').val(),
+				firstname: $('#firstname').val(),
+				lastname: $('#lastname').val(),
+				email: $('#email').val(),
+				phonenumber: $('#phonenumber').val(),
+				isGroup: $('#groupregistrationcheck').prop('checked'),
+				isUnder18: $('#ageregistrationcheck').prop('checked')
+			},
+			dataType: 'text'
 		});
+		console.log("Name:  " + that.attr('name'));
 		ajaxRequest.success(function(msg) {
 			ajaxRequest = null;
 			if(msg) {
+				console.log("hello" + msg);
 				$('#username_login').val($('#username_login').val());
 				$('#signin-submit').removeClass('disabled');
 				$('#signin-submit').removeAttr('disabled');

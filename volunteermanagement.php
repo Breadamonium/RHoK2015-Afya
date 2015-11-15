@@ -74,7 +74,7 @@ class volunteermanagementsystem extends SQLite3 {
     function signout_group($groupname, $timeout) {
         $result = $this->{query}("SELECT lasttimeid FROM groups WHERE groupname='$groupname'");
         $timeid = $result->{fetchArray}()[0];
-        $this->{query}("UPDATE timesheet SET timeout='$timeout', totaltime=groupsize*('$timeout'-timein) WHERE timeentryid='$timeid'");
+        $this->{query}("UPDATE timesheet SET timeout='$timeout', totaltime=groupsize*('$timeout'-timein)/3600. WHERE timeentryid='$timeid'");
         $result = $this->{query}("SELECT totaltime FROM timesheet WHERE timeentryid='$timeid'");
         $newtime = $result->{fetchArray}()[0];
         $this->{query}("UPDATE groups SET lasttimeid=Null, hours=hours+'$newtime' WHERE groupname='$groupname'")

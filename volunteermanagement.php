@@ -97,7 +97,7 @@ class volunteermanagementsystem extends SQLite3 {
     function signin_group($groupname, $timein, $groupsize) {
         $result = $this->query("SELECT groupid FROM groups WHERE groupname='$groupname'");
         $groupid = $result->fetchArray()[0];
-        $this->query("INSERT INTO timesheet (timein, groupid, groupsize) VALUES ('$timein', '$groupid', $groupsize)");
+        $this->query("INSERT INTO timesheet (timein, groupid, groupsize) VALUES ('$timein', '$groupid', '$groupsize')");
         $result = $this->query("SELECT timeentryid FROM timesheet WHERE timein = '$timein' AND groupid= '$groupid'");
 		$timeid = $result->fetchArray()[0];
         $this->query("UPDATE groups SET lasttimeid='$timeid' WHERE groupid='$groupid'");
@@ -126,30 +126,34 @@ class volunteermanagementsystem extends SQLite3 {
         return array($groupname, $hours);
     }
 
-    // Returns a table of volunteers and their total hours worked between startdate and enddate.
+    // Returns a table of volunteers, phone numbers, and their total hours worked between startdate and enddate.
     function get_aggregate_user_hours($startdate=0, $enddate=9999999999) {
-        $result = $this->query("SELECT firstname, lastname, sum(totaltime) FROM timesheet INNER JOIN volunteers ON timesheet.userid=volunteers.userid WHERE timein>'$startdate' AND timeout<'$enddate' AND groupid IS NULL");
+        $result = $this->query("SELECT volunteers.firstname, volunteers.lastname, volunteers.phone, sum(timesheet.totaltime) FROM timesheet INNER JOIN volunteers ON timesheet.userid=volunteers.userid WHERE timesheet.timein>'$startdate' AND timesheet.timeout<'$enddate' AND timesheet.groupid IS NULL GROUP BY volunteers.username");
         return $result->fetchArray();
     }
 
-    // Returns a table of groups and their total hours worked between a start date and end date.
+    // Returns a table of groups, contact names, contact phone numbers, and their total hours worked between a start date and end date.
     function get_aggregate_group_hours($startdate=0, $enddate=9999999999) {
-        $result = $this->query("SELECT groupname, sum(totaltime) FROM timesheet INNER JOIN groups ON timesheet.groupid=groups.groupid WHERE timein>'$startdate' AND timeout<'$enddate' AND userid IS NULL");
+        $result = $this->query("SELECT groups.groupname, groups.contactname, groups.contactphone, sum(timesheet.totaltime) FROM timesheet INNER JOIN groups ON timesheet.groupid=groups.groupid WHERE timesheet.timein>'$startdate' AND timesheet.timeout<'$enddate' AND timesheet.userid IS NULL GROUP BY groups.groupname");
         return $result->fetchArray();
     }
 
     // Returns a timesheet for a user between a start date and end date.
     function get_user_timesheet($firstname, $lastname, $startdate=0, $enddate=9999999999) {
-        $userid = $this->query("SELECT userid FROM volunteers WHERE firstname='$firstname' AND lastname='$lastname");
-        $result = $this->query("SELECT datetime(timein, 'unixepoch'), totaltime FROM timesheet WHERE timein>'$startdate' AND timeout<'$enddate' AND userid='$userid'");
-        $result = $result->fetchArray();
+        $result = $this->query("SELECT userid FROM volunteers WHERE volunteers.firstname='$firstname' AND volunteers.lastname='$lastname'");
+        $userid = $result->fetchArray()[0];
+        $result = $this->query("SELECT timein, totaltime FROM timesheet WHERE timein>'$startdate' AND timeout<'$enddate' AND userid='$userid'");
+        $curr = $result->fetchArray();
+        $arr = array();
         $i = 0;
-        while ($i < count($result)) {
-            $utc_date = DateTime::createFromFormat('Y-m-d H:i:s', $result[$i][0], new DateTimeZone('UTC'));  
-            $new_date = $utc_date->setTimeZone('America/New_York');
-            $result[$i][0] = $new_date->format('Y-m-d');
+        while ($curr != false) {
+            $utc_date = DateTime::createFromFormat('U', $curr[0]);  
+            $new_date = $utc_date->setTimezone(new DateTimeZone('America/New_York'));
+            $arr[$i] = array($new_date->format('Y-m-d'), $curr[1]);
+            $curr = $result->fetchArray();
+            $i++;
         }
-        return $result;
+        return $arr;
     }
 
     // Returns a timesheet for a group between a start date and end date.
@@ -157,19 +161,28 @@ class volunteermanagementsystem extends SQLite3 {
         $result = $this->query("SELECT groupid FROM groups WHERE groupname='$groupname'");
         $groupid = $result->fetchArray()[0];
         $result = $this->query("SELECT datetime(timein, 'unixepoch'), totaltime FROM timesheet WHERE timein>'$startdate' AND timeout<'$enddate' AND groupid='$groupid'");
-        $result = $result->fetchArray();
+        $curr = $result->fetchArray();
+        $arr = array();
         $i = 0;
-        while ($i < count($result)) {
-            $utc_date = DateTime::createFromFormat('Y-m-d H:i:s', $result[$i][0], new DateTimeZone('UTC'));  
-            $new_date = $utc_date->setTimeZone('America/New_York');
-            $result[$i][0] = $new_date->format('Y-m-d');
+        while ($curr != false) {
+            $utc_date = DateTime::createFromFormat('Y-m-d H:i:s', $curr[0], new DateTimeZone('UTC'));  
+            $new_date = $utc_date->{'setTimeZone'}(new DateTimeZone('America/New_York'));
+            $arr[$i] = array($new_date->format('Y-m-d'), $curr[1]);
+            $curr = $result->fetchArray();
+            $i++;
         }
-        return $result;
+        return $arr;
     }
 
     // Returns all of the info on a particular person.
     function get_user_info($firstname, $lastname) {
         $result = $this->query("SELECT * FROM volunteers WHERE firstname='$firstname' AND lastname='$lastname'");
+        return $result->fetchArray();
+    }
+
+    // Returns all of the info on a particular group.
+    function get_group_info($groupname) {
+        $result = $this->query("SELECT * FROM groups WHERE groupname='$groupname'");
         return $result->fetchArray();
     }
 

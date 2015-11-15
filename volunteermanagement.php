@@ -154,7 +154,7 @@ class volunteermanagementsystem extends SQLite3 {
 
     // Returns a timesheet for a group between a start date and end date.
     function get_group_timesheet($groupname, $startdate=0, $enddate=9999999999) {
-        $result = $this->query("SELECT groupid FROM groups WHERE groupname='$groupid'");
+        $result = $this->query("SELECT groupid FROM groups WHERE groupname='$groupname'");
         $groupid = $result->fetchArray()[0];
         $result = $this->query("SELECT datetime(timein, 'unixepoch'), totaltime FROM timesheet WHERE timein>'$startdate' AND timeout<'$enddate' AND groupid='$groupid'");
         $result = $result->fetchArray();

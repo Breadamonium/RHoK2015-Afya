@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -22,8 +23,8 @@
 <body>
 
 
-<div class="container">
-      <div class="row">
+  <div class="container">
+    <div class="row">
       <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-login">
           <div class="panel-heading">
@@ -44,83 +45,101 @@
                   <p id="login-success-msg" class="hidden bg-success">Thanks for registering!</p>
                   <div class="form-group">
                     <input type="text" name="username" id="username_login" tabindex="1" class="form-control username" placeholder="Username" value="">
-                    <p class="hidden bg-danger">Username does not exist</p>
+                    <p class="hidden bg-danger"></p>
                   </div>
-                  <div class="row">
-                    <div class="col-sm-9">
+                  <div class="form-group">
+                    <div class="dropdown">
+                      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="categorydropdown"><span id="categorydropdownchoice">Category</span>
+                        <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#">HTML</a></li>
+                          <li><a href="#">CSS</a></li>
+                          <li><a href="#">JavaScript</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="checkbox">
+                      <label for="grouplogincheck"><input type="checkbox" name="grouplogincheck" id="grouplogincheck" /> I am signing in as a group</label>
+                    </div>
+                    <div id="grouplogin" class="hidden">
                       <div class="form-group">
-                        <input type="time" name="time" id="time" tabindex="2" class="form-control">
+                        <label>How many people are in your group?</label> <input type="number" name="numpeopleingroup" id="numpeopleingroup" class="form-control" min="1" value="1">
                       </div>
                     </div>
-                    <div class="col-sm-3">
-                      <button type="button" id="currTime" class="btn btn-primary" autocomplete="off"> Current Time
-                      </button>
-                    </div>
-
-                  </div>
-
-                  <div class="form-group">
                     <div class="row">
-                      <div class="col-sm-6">
-                        <input type="submit" name="signin-submit" id="signin-submit" tabindex="4" class="form-control btn btn-login disabled" value="Sign In" />
+                      <div class="col-sm-9">
+                        <div class="form-group">
+                          <input type="time" name="time" id="time" tabindex="2" class="form-control">
+                        </div>
                       </div>
-                      <div class="col-sm-6">
-                        <input type="submit" name="signout-submit" id="signout-submit" tabindex="4" class="form-control btn btn-login disabled" value="Sign Out" />
-                      </div>
-                    </div>
-                  </div>
-                </form>
-
-
-
-
-
-
-
-
-
-
-
-                <form id="register-form" name="register-form" role="form" style="display: none;">
-                  <div class="form-group">
-                    <input type="text" name="username" id="username_registration" tabindex="1" class="form-control username" placeholder="Username" value="" />
-                    <p class="hidden bg-danger">Username already taken</p>
-                  </div>
-                  <div class="form-group">
-                    <input type="text" name="firstname" id="firstname" tabindex="1" class="form-control" placeholder="First Name" value="" />
-                  </div>
-                  <div class="form-group">
-                    <input type="text" name="lastname" id="lastname" tabindex="1" class="form-control" placeholder="Last Name" value="" />
-                  </div>
-                  <div class="form-group">
-                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="" />
-                  </div>
-                  <div class="form-group">
-                    <input type="text" name="phonenumber" id="phonenumber" tabindex="1" class="form-control" placeholder="Phone Number" value="" />
-                  </div>
-                  <!--<div class="checkbox">
-                    <label><input type="checkbox" name="addtolistserv" /> Add me to your listserv</label>
-                  </div>-->
-                  <div class="form-group">
-                    <div class="row">
-                      <div class="col-sm-6 col-sm-offset-3">
-                        <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now" />
+                      <div class="col-sm-3">
+                        <button type="button" id="currTime" class="btn btn-primary" autocomplete="off"> Current Time
+                        </button>
                       </div>
                     </div>
-                  </div>
-                </form>
+
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <input type="submit" name="signin-submit" id="signin-submit" tabindex="4" class="form-control btn btn-login disabled" value="Sign In" />
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="submit" name="signout-submit" id="signout-submit" tabindex="4" class="form-control btn btn-login disabled" value="Sign Out" />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
 
 
 
+
+
+
+
+
+
+
+
+                  <form id="register-form" name="register-form" role="form" style="display: none;">
+                    <div class="form-group">
+                      <input type="text" name="username" id="username_registration" tabindex="1" class="form-control username" placeholder="Username" value="" />
+                      <p class="hidden bg-danger"></p>
+                    </div>
+                    <div class="form-group">
+                      <input type="text" name="firstname" id="firstname" tabindex="1" class="form-control" placeholder="First Name" value="" />
+                    </div>
+                    <div class="form-group">
+                      <input type="text" name="lastname" id="lastname" tabindex="1" class="form-control" placeholder="Last Name" value="" />
+                    </div>
+                    <div class="form-group">
+                      <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="" />
+                    </div>
+                    <div class="form-group">
+                      <input type="text" name="phonenumber" id="phonenumber" tabindex="1" class="form-control" placeholder="Phone Number" value="" />
+                    </div>
+                    <div class="checkbox">
+                      <label for="groupregistrationcheck"><input type="checkbox" name="groupregistrationcheck" id="groupregistrationcheck" /> I am registering for a group</label>
+                    </div>
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                          <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now" />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+
+
+
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
-</html>
+  </body>
+  </html>
 
 <!--
 

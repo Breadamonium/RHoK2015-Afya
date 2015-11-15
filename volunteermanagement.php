@@ -6,8 +6,8 @@ class volunteermanagementsystem extends SQLite3 {
         $this->open("./volunteerdatabase.db");
     }
 
-    function new_volunteer($name, $username, $address, $phone, $email, $remoteaccessallowed, $under18) {
-		$this->query("INSERT INTO volunteers (name, username, address, phone, email, hours, remoteaccessallowed, under18) VALUES ('$name', '$username', '$address', '$phone', '$email', 0, '$remoteaccessallowed', '$under18')");
+    function new_volunteer($firstname, $lastname, $username, $address, $phone, $email, $remoteaccessallowed, $under18) {
+		$this->query("INSERT INTO volunteers (firstname, lastname, username, address, phone, email, hours, remoteaccessallowed, under18) VALUES ('$firstname', '$lastname', '$username', '$address', '$phone', '$email', 0, '$remoteaccessallowed', '$under18')");
 		return true;
 
     }
@@ -22,6 +22,16 @@ class volunteermanagementsystem extends SQLite3 {
     function username_exists($username) {
 		$result = $this->query("SELECT COUNT(*) FROM volunteers WHERE username='$username'");
 		$count = $result->fetchArray()[0];
+        if ($count == 0){
+            return false;
+        }
+        return true;
+    }
+
+    // Returns true iff $username is already within the volunteers table
+    function email_exists($email) {
+        $result = $this->query("SELECT COUNT(*) FROM volunteers WHERE email='$email'");
+        $count = $result->fetchArray()[0];
         if ($count == 0){
             return false;
         }
@@ -94,11 +104,6 @@ class volunteermanagementsystem extends SQLite3 {
         return array($username, $hours);
     }
 
-    function get_all_user_hours() {
-        $result = $this->query("SELECT username, hours FROM volunteers");
-        return $result->fetchArray();
-    }
-
     function get_group_hours($groupname) {
         $result = $this->query("SELECT hours FROM groups WHERE groupname='$groupname'");
         $hours = $result->fetchArray()[0];
@@ -110,6 +115,25 @@ class volunteermanagementsystem extends SQLite3 {
         return $result->fetchArray();
     }
 
+    function get_aggregate_user_hours($startdate=0, $enddate=9999999999) {
+        $result = $this->query("SELECT userid, sum(totaltime) FROM timesheet WHERE timein>'$startdate' AND timeout<'$enddate' GROUP BY userid AND groupid IS NULL");
+        return $result->fetchArray();
+    }
+
+    function get_user_timesheet($userid, $startdate=0, $enddate=9999999999) {
+        $result = $this->query("SELECT datetime(timein, 'unixepoch'), totaltime FROM timesheet WHERE timein>'$startdate' AND timeout<'$enddate' AND userid='$userid'");
+        $result = $result->fetchArray();
+        $i = 0;
+        while $i < count($result) {
+            $utc_date = DateTime::createFromFormat('Y-m-d H:i:s', $result[$i][0], new DateTimeZone('UTC'));  
+            $result[i][0] = $utc_date->setTimeZone('America/New_York');
+        }
+        return $result;
+    }
+
+    function get_user_info($firstname, $lastname) {
+        $result = $this->query("SELECT * FROM volunteers WHERE firstname='$firstname' AND lastname='$lastname'");
+    }
 
 }
 

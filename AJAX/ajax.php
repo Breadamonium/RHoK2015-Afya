@@ -79,7 +79,7 @@ if(!empty($_POST['name'])) {
 		case 'login-form':
 			$username = $_POST['username'];
 			$isGroup = $_POST['isGroup'];
-			$time = $_POST['time'];
+			$time = intval($_POST['time']);
 			$groupsize = intval($_POST['size']);
 			if($isGroup == "true") {
 				$isGroup = true;

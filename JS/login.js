@@ -24,10 +24,6 @@ $(document).ready(function() {
 		$('#time').val(""+hour+":"+min);
 	});*/
 
-	var getTime = function() {
-		return Date.UTC();
-	};
-
 	var disableSignIn = true;
 	var disableSignOut = true;
 	var disableRegister = true;
@@ -297,7 +293,7 @@ $(document).ready(function() {
 				name: that.attr('name'),
 				username: $('#username_login').val(),
 				isGroup: $('#grouplogincheck').prop('checked'),
-				time: getTime(),
+				time: new Date().getTime()/1000,
 				size: $('#numpeopleingroup').val()
 			},
 			dataType: 'text'

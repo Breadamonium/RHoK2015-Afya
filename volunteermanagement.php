@@ -3,22 +3,18 @@
 class volunteermanagementsystem extends SQLite3 {
 
     function __construct() {
-        $this->open("./volunteerdatabase.db");
+        $this->open('./volunteerdatabase.db');
     }
 
-    function new_volunteer($firstname, $lastname, $username, $address, $phone, $email, $remoteaccessallowed, $under18) {
-		$this->query("INSERT INTO volunteers (firstname, lastname, username, address, phone, email, hours, remoteaccessallowed, under18) VALUES ('$firstname', '$lastname', '$username', '$address', '$phone', '$email', 0, '$remoteaccessallowed', '$under18')");
-		return true;
-
+    function new_volunteer($firstname, $lastname, $username, $address, $phone, $email, $skillset, $category, $findout, $under18) {
+		$this->query("INSERT INTO volunteers (firstname, lastname, username, address, phone, email, hours, under18, skillset, category, findout) VALUES ('$firstname', '$lastname', '$username', '$address', '$phone', '$email', 0, '$under18', '$skillset', '$category', '$findout')");
     }
 
-    function new_group($name) {
-        $this->query("INSERT INTO groups (groupname, hours) VALUES ('$name', 0)");
-		return true;
-        
+    function new_group($name, $contactname, $contactphone, $findout) {
+        $this->query("INSERT INTO groups (groupname, hours, contactname, contactphone, findout) VALUES ('$name', 0, '$contactname', '$contactphone', '$findout')");
     }
 
-    // Returns true iff $username is already within the volunteers table
+    // Returns true iff $username is already within the volunteers table.
     function username_exists($username) {
 		$result = $this->query("SELECT COUNT(*) FROM volunteers WHERE username='$username'");
 		$count = $result->fetchArray()[0];
@@ -28,9 +24,19 @@ class volunteermanagementsystem extends SQLite3 {
         return true;
     }
 
-    // Returns true iff $username is already within the volunteers table
+    // Returns true iff $email is already within the volunteers table.
     function email_exists($email) {
         $result = $this->query("SELECT COUNT(*) FROM volunteers WHERE email='$email'");
+        $count = $result->fetchArray()[0];
+        if ($count == 0){
+            return false;
+        }
+        return true;
+    }
+
+    // Returns true iff $groupname is already within the groups table.
+    function groupname_exists($groupname) {
+        $result = $this->query("SELECT COUNT(*) FROM groups WHERE groupname='$groupname'");
         $count = $result->fetchArray()[0];
         if ($count == 0){
             return false;
@@ -101,7 +107,7 @@ class volunteermanagementsystem extends SQLite3 {
     function get_user_hours($firstname, $lastname) {
         $result = $this->query("SELECT hours FROM volunteers WHERE firstname='$firstname' AND lastname='$lastname'");
         $hours = $result->fetchArray()[0];
-        return array($username, $hours);
+        return array($firstname, $lastname, $hours);
     }
 
     function get_group_hours($groupname) {
@@ -133,7 +139,7 @@ class volunteermanagementsystem extends SQLite3 {
         $result = $this->query("SELECT datetime(timein, 'unixepoch'), totaltime FROM timesheet WHERE timein>'$startdate' AND timeout<'$enddate' AND userid='$userid'");
         $result = $result->fetchArray();
         $i = 0;
-        while $i < count($result) {
+        while ($i < count($result)) {
             $utc_date = DateTime::createFromFormat('Y-m-d H:i:s', $result[$i][0], new DateTimeZone('UTC'));  
             $new_date = $utc_date->setTimeZone('America/New_York');
             $result[$i][0] = $new_date->format('Y-m-d');
@@ -148,7 +154,7 @@ class volunteermanagementsystem extends SQLite3 {
         $result = $this->query("SELECT datetime(timein, 'unixepoch'), totaltime FROM timesheet WHERE timein>'$startdate' AND timeout<'$enddate' AND groupid='$groupid'");
         $result = $result->fetchArray();
         $i = 0;
-        while $i < count($result) {
+        while ($i < count($result)) {
             $utc_date = DateTime::createFromFormat('Y-m-d H:i:s', $result[$i][0], new DateTimeZone('UTC'));  
             $new_date = $utc_date->setTimeZone('America/New_York');
             $result[$i][0] = $new_date->format('Y-m-d');

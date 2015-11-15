@@ -134,13 +134,15 @@ $(document).ready(function() {
 		});
 		ajaxRequest.success(function(username_exists) {
 			ajaxRequest = null;
-			if(username_exists) {
+			console.log(username_exists);
+			if(username_exists == "1") {
 				that.next().html("Username already exists.");
 				that.next().removeClass('hidden');
 				$('#register-submit').addClass('disabled');
 				//disableRegister = true;
 				hasRegisterError = true;
 			} else {
+				$('#register-submit').removeClass('disabled');
 				hasRegisterError = false;
 			}
 		});
@@ -251,10 +253,12 @@ $(document).ready(function() {
 		$('#phonenumber').keyup();
 		$('#username_registration').focusout();
 		if(hasRegisterError) {
+			hasRegisterError = false;
 			return false;
 		}
 		$('#username_registration').keyup();
 		if(hasRegisterError) {
+			hasRegisterError = false;
 			return false;
 		}
 		abortExistingRequest(ajaxRequest);

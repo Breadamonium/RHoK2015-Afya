@@ -30,6 +30,8 @@ $(document).ready(function() {
 
 	var ajaxRequest = null;
 
+	var categorychoice = '';
+
 	var abortExistingRequest = function(request) {
 		if(request != null) {
 			request.abort();
@@ -70,6 +72,8 @@ $(document).ready(function() {
 		$('#findout').val('');
 		$('#groupregistrationcheck').attr('checked', false);
 		$('#ageregistrationcheck').attr('checked', false);
+		categorychoice = '';
+		$('#categorydropdownchoice').html('Category');
 		//disableRegister = true;
 	};
 
@@ -258,6 +262,7 @@ $(document).ready(function() {
 				email: $('#email').val(),
 				phonenumber: $('#phonenumber').val(),
 				findout: $('#findout').val(),
+				categorychoice: categorychoice,
 				isGroup: $('#groupregistrationcheck').prop('checked'),
 				isUnder18: $('#ageregistrationcheck').prop('checked')
 			},
@@ -316,7 +321,15 @@ $(document).ready(function() {
 		if($(this).hasClass("disabled")) {
 			return false;
 		}
-	})
+	});
+
+	$('.categorychoice').click(function(){
+		categorychoice = $(this).text();
+		$('#categorydropdownchoice').html(categorychoice);
+		if(categorychoice == "Other") {
+			categorychoice = '';
+		}
+	});
 
 
 });

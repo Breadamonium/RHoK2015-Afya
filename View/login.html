@@ -51,21 +51,12 @@
                     <p class="hidden bg-danger"></p>
                   </div>
                   <div class="form-group">
-                    <div class="dropdown">
-                      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="categorydropdown"><span id="categorydropdownchoice">Category</span>
-                        <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                          <li><a href="#">HTML</a></li>
-                          <li><a href="#">CSS</a></li>
-                          <li><a href="#">JavaScript</a></li>
-                        </ul>
-                      </div>
-                    </div>
                     <div id="grouplogin" class="hidden">
                       <div class="form-group">
                         <label>How many people are in your group?</label> <input type="number" name="numpeopleingroup" id="numpeopleingroup" class="form-control" min="1" value="1" required />
                       </div>
                     </div>
+                  </div>
                     <!--<div class="row">
                       <div class="col-sm-9">
                         <div class="form-group">
@@ -124,6 +115,20 @@
                     <div class="form-group">
                       <input type="text" name="findout" id="findout" tabindex="1" class="form-control" placeholder="How did you find out about us?" value="" />
                       <p class="hidden bg-danger"></p>
+                    </div>
+                    <div class="dropup">
+                      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="categorydropdown"><span id="categorydropdownchoice">Category</span>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li class="categorychoice"><a href="#categorydropdown">Intern</a></li>
+                        <li class="categorychoice"><a href="#categorydropdown">Staff</a></li>
+                        <li class="categorychoice"><a href="#categorydropdown">Doctor/Nurse</a></li>
+                        <li class="categorychoice"><a href="#categorydropdown">Lawyer</a></li>
+                        <li class="categorychoice"><a href="#categorydropdown">At-Risk Group</a></li>
+                        <li class="categorychoice"><a href="#categorydropdown">U-18 Student</a></li>
+                        <li class="categorychoice"><a href="#categorydropdown">Other</a></li>
+                      </ul>
                     </div>
                     <div class="checkbox">
                       <label for="ageregistrationcheck"><input type="checkbox" name="ageregistrationcheck" id="ageregistrationcheck" /> I am under 18 years old.</label>

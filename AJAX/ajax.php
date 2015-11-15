@@ -58,6 +58,7 @@ if(!empty($_POST['name'])) {
 			$email = $_POST['email'];
 			$phonenumber = intval($_POST['phonenumber']);
 			$isGroup = $_POST['isGroup'];
+			$categorychoice = $_POST['categorychoice'];
 			$isUnder18 = $_POST['isUnder18'];
 			$findout = $_POST['findout'];
 			if($isGroup == "true") {
@@ -73,7 +74,7 @@ if(!empty($_POST['name'])) {
 			if($isGroup) {
 				echo $db->{'new_group'}($username, "$firstname $lastname", $phonenumber, $findout);
 			} else {
-				echo $db->{'new_volunteer'}($firstname, $lastname, $username, NULL, $phonenumber, $email, '', '', $findout, $isUnder18);
+				echo $db->{'new_volunteer'}($firstname, $lastname, $username, NULL, $phonenumber, $email, '', $categorychoice, $findout, $isUnder18);
 			}
 			return;
 		case 'login-form':

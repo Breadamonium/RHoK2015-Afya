@@ -1,11 +1,12 @@
 <?php
-require ('../volunteermanagementsystem.php');
+require ('../volunteermanagement.php');
 if(!empty($_POST['name'])) {
 	$name = $_POST['name'];
 	if($name == 'username') {
 		try {
 			$db = new volunteermanagementsystem();
-		} catch {
+			
+		} catch (Exception $e){
 			echo "Cannot connect to database.";
 		}
 		echo true;

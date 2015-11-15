@@ -81,20 +81,18 @@
 		</div>
 		<?php
 			$db = new volunteermanagementsystem();
-			print $db->{'new_volunteer'}('austin', 'austin', 'sesame street', '4102310', 'hi@cornell.edu', false, true); 
-			print $db->{'new_group'}("dan");
-			print $db->{'username_exists'}("austin");
-			print $db->{'user_signedin'}("austin");
-			print $db->{'group_signedin'}("dan");
-			print $db->{'signin_user'}('austin', '12345');
-			print $db->{'signout_user'}('austin', '67890');
-			print $db->{'signin_group'}('dan', '1000');
-			print $db->{'signout_group'}('dan','2000');
-			$db->{'get_user_hours'}('austin');
+			$db->{'new_volunteer'}('austin', 'powers', 'austin', 'sesame street', 4102310, 'hi@cornell.edu', "profession do-gooder", "sexy person", "I heard it through the grapevine - duhhh duh duh duhhhh duh duh duh duh duhhhh duh duhhh duh duh duhhhh duh duh duh duhhh duhhh!", true); 
+			$db->{'new_group'}("dan and friends", "dan the man", 8675309, "Big Tony told him about it");
+			$db->{'username_exists'}("austin");
+			$db->{'user_signedin'}("austin");
+			$db->{'group_signedin'}("dan and friends");
+			$db->{'signin_user'}('austin', '12345');
+			$db->{'signout_user'}('austin', '67890', "helping is a blast");
+			$db->{'signin_group'}('dan and friends', '1000');
+			$db->{'signout_group'}('dan and friends','2000', "this was a lot of fun!");
+			$db->{'get_user_hours'}('austin', 'powers');
 			
-			$db->{'get_group_hours'}('dan');
-			$db->{'get_all_user_hours'}();
-			$db->{'get_all_group_hours'}();
+			$db->{'get_group_hours'}('dan and friends');
 		?>
 	</div>
 

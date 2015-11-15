@@ -7,13 +7,15 @@ class volunteermanagementsystem extends SQLite3 {
     }
 
     function new_volunteer($name, $username, $address, $phone, $email, $remoteaccessallowed, $under18) {
-        $this->{query}("INSERT INTO volunteers (name, username, address, phone, email, hours, remoteaccessallowed, under18) VALUES ('$name', '$username', '$address', '$phone', '$email', 0, '$remoteaccessallowed', '$under18')");
-        return;
+		$this->query("INSERT INTO volunteers (name, username, address, phone, email, hours, remoteaccessallowed, under18) VALUES ('$name', '$username', '$address', '$phone', '$email', 0, '$remoteaccessallowed', '$under18')");
+		return true;
+
     }
 
     function new_group($name) {
         $this->query("INSERT INTO groups (groupname, hours) VALUES ('$name', 0)");
-        return;
+		return true;
+        
     }
 
     // Returns true iff $username is already within the volunteers table
@@ -50,9 +52,11 @@ class volunteermanagementsystem extends SQLite3 {
         $result = $this->query("SELECT userid FROM volunteers WHERE username='$username'");
         $userid = $result->fetchArray()[0];
         $this->query("INSERT INTO timesheet (timein, userid, groupsize) VALUES ('$timein', '$userid', 1)");
-        $timeid = $this->query("SELECT timeentryid FROM timesheet WHERE timein = '$timein' AND userid= '$userid'");
+        $result = $this->query("SELECT timeentryid FROM timesheet WHERE timein = '$timein' AND userid= '$userid'");
+		$timeid = $result->fetchArray()[0];
         $this->query("UPDATE volunteers SET lasttimeid='$timeid' WHERE userid='$userid'");
-    }
+		return $timeid;
+	}
 
     function signout_user($username, $timeout) {
         $result = $this->query("SELECT lasttimeid FROM volunteers WHERE username='$username'");
@@ -61,15 +65,18 @@ class volunteermanagementsystem extends SQLite3 {
         $result = $this->query("SELECT totaltime FROM timesheet WHERE timeentryid='$timeid'");
         $newtime = $result->fetchArray()[0];
         $this->query("UPDATE volunteers SET lasttimeid=Null, hours=hours+'$newtime' WHERE username='$username'");
+		return $newtime;
     }
 
     function signin_group($groupname, $timein) {
         $result = $this->query("SELECT groupid FROM groups WHERE groupname='$groupname'");
         $groupid = $result->fetchArray()[0];
         $this->query("INSERT INTO timesheet (timein, groupid, groupsize) VALUES ('$timein', '$groupid', 1)");
-        $timeid = $this->query("SELECT timeentryid FROM timesheet WHERE timein = '$timein' AND groupid= '$groupid'");
+        $result = $this->query("SELECT timeentryid FROM timesheet WHERE timein = '$timein' AND groupid= '$groupid'");
+		$timeid = $result->fetchArray()[0];
         $this->query("UPDATE groups SET lasttimeid='$timeid' WHERE groupid='$groupid'");
-    }
+		return $timeid;
+	}
 
     function signout_group($groupname, $timeout) {
         $result = $this->query("SELECT lasttimeid FROM groups WHERE groupname='$groupname'");
@@ -78,6 +85,7 @@ class volunteermanagementsystem extends SQLite3 {
         $result = $this->query("SELECT totaltime FROM timesheet WHERE timeentryid='$timeid'");
         $newtime = $result->fetchArray()[0];
         $this->query("UPDATE groups SET lasttimeid=Null, hours=hours+'$newtime' WHERE groupname='$groupname'");
+		return $newtime;
     }
 
     function get_user_hours($username) {

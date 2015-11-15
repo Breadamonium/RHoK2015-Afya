@@ -78,7 +78,7 @@
         F15854 (red)*/
 
       var colors= ['#5DA5DA', '#FAA43A', '#60BD68', '#F17CB0', '#B2912F', '#B276B2', '#DECF3F', '#F15854', '#4d4d4d'];
-      var sampleData= [["Church", 10], ["Individuals", 50], ["University", 3], ["austin", 1]];
+      var sampleData= [["Interns(OTA)", 2180], ["Nurses(RN)", 250], ["U-18 Students", 400], ["At-Risk Group", 7392], ["David Isaacs", 800], ["Individual", 2800], ["MSKCC(RN)", 720], ["JTeens", 450], ["Sortathon", 1800], ["Stephen Kelly, MD", 500]];
       var sampleData2=[];
 
       for (var i=0; i<30; i++){
@@ -159,7 +159,7 @@
         drawPie(sampleData, "piechart");
         drawLineChartMonth(sampleData2, "linechart", "Cornell Students");
         drawTable(sampleData3,"tablechart");
-        JSONToCSVConvertor(sampleData, true); //Boolean is whether or not the JSON has a header
+        //JSONToCSVConvertor(sampleData, true); //Boolean is whether or not the JSON has a header
       });
 
 

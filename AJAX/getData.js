@@ -28,6 +28,7 @@ function get_user_hours(firstname, lastname) {
 }
 
 function get_group_hours(groupname) {
+	console.log(groupname);
 	abortExistingAjaxRequest();
 	existingAjaxRequest = $.ajax({
 		method: 'post',
@@ -95,7 +96,7 @@ function get_group_timesheet(groupname, startdate, enddate) {
 		url: dataAjaxHanderURL,
 		data: {
 			name: 'get_group_timesheet',
-			groupname: groupname
+			groupname: groupname,
 			startdate: startdate,
 			enddate: enddate
 		},

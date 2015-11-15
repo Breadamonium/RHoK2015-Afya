@@ -13,6 +13,7 @@
     <meta name="author" content="">
 
     <title>Afya Data Analysis Dashboard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
     <!-- Bootstrap Core CSS -->
     <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -63,22 +64,63 @@
       }
 
 
-      function drawPie(data, id) {
-        var header = ['Group', 'Total Hours'];
-        data.unshift(header);
+    function JSONToCSVConvertor(JSONData, ShowLabel) {     
 
-        var data = google.visualization.arrayToDataTable(data);
+        //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+        var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+        var CSV = '';    
+        //This condition will generate the Label/Header
+        if (ShowLabel) {
+            var row = "";
 
-        var options = {
-          title: 'Breakdown by Group',
-          colors: colors,
-          sliceVisibilityThreshold: 0.01
-        };
+            //This loop will extract the label from 1st index of on array
+            for (var index in arrData[0]) {
+                //Now convert each value to string and comma-seprated
+                row += index + ',';
+            }
+            row = row.slice(0, -1);
+            //append Label row with line break
+            CSV += row + '\r\n';
+        }
 
-        var chart = new google.visualization.PieChart(document.getElementById(id));
+        //1st loop is to extract each row
+        for (var i = 0; i < arrData.length; i++) {
+            var row = "";
+            //2nd loop will extract each column and convert it in string comma-seprated
+            for (var index in arrData[i]) {
+                row += '"' + arrData[i][index] + '",';
+            }
+            row.slice(0, row.length - 1);
+            //add a line break after each row
+            CSV += row + '\r\n';
+        }
 
-        chart.draw(data, options);
+        if (CSV == '') {        
+            alert("Invalid data");
+            return;
+        }   
+
+        //this trick will generate a temp "a" tag
+        var link = document.createElement("a");    
+        link.id="lnkDwnldLnk";
+
+        //this part will append the anchor tag and remove it after automatic click
+        document.body.appendChild(link);
+
+        var csv = CSV;  
+        blob = new Blob([csv], { type: 'text/csv' }); 
+        var csvUrl = window.webkitURL.createObjectURL(blob);
+        var filename = 'UserExport.csv';
+        $("#lnkDwnldLnk")
+        .attr({
+            'download': filename,
+            'href': csvUrl
+        }); 
+
+        $('#lnkDwnldLnk')[0].click();    
+        document.body.removeChild(link);
       }
+
 
 
      function drawLineChartMonth(data, id, groupName) {
@@ -100,48 +142,28 @@
         chart.draw(data, options);
       }
 
-      var sampleData3= [['Mike George', 'Mikey', 'CPW', 30, true],
-          ['Austin Lin', 'Austy', 'WARC', 20, false],
-          ['Anthony Lin', 'Anthy', 'Intern', 12, false],
-          ['Jeff O', 'Jeffy', 'Nurse', 32, true]
-        ];
-
-
-     function drawTable(d,id) {
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Name');
-        data.addColumn('string', 'UserName');
-        data.addColumn('string', 'Group');
-        data.addColumn('number', 'Hours');
-        data.addColumn('boolean', 'IsUnder18');
-        /**data.addRows([
-          ['Mike',  {v: 10000, f: '$10,000'}, true],
-          ['Jim',   {v:8000,   f: '$8,000'},  false],
-          ['Alice', {v: 12500, f: '$12,500'}, true],
-          ['Bob',   {v: 7000,  f: '$7,000'},  true]
-        ]);**/
-
-        data.addRows(d);
-
-
-        var table = new google.visualization.Table(document.getElementById(id));
-
-        table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
-      }
-
-
-
-      google.setOnLoadCallback(function(){
-
-        //drawPie(sampleData, "piechart");
-        drawLineChartMonth(sampleData2, "linechart", "Cornell Students");
-        //drawTable(sampleData3,"tablechart");
-
-      });
-
-
 
     </script>
+    <script type="text/javascript" src="../../AJAX/getData.js"></script>
+    <script>
+                                /*$(document).ready(function(){
+                                        $('.agroup').click(function(){
+                                        get_group_hours($(this).text()).success(function(msg) {
+                                            console.log(msg);
+                                        });   
+                                });
+                                    });*/
+        dataAjaxHanderURL = '../../AJAX/getData.php';
+        function agroupClick(el){
+            var name= $(el).text();
+           get_group_timesheet(name).success(function(msg){
+            drawLineChartMonth(msg, 'linechart', name);  
+            $("#download").click(function(){
+                JSONToCSVConvertor(msg, false);    
+                })
+           }); 
+        }
+                                </script>
 </head>
 
 <body>
@@ -255,7 +277,7 @@
 										$groups = $db->{'allgroups'}();
 										$arow = $groups->fetchArray();
 										foreach($arow as $agroup){
-											echo "<li><a href='LineGraphs.php?type=".$agroup."'> $agroup</a></li>";
+											echo "<li class='agroup' onclick='agroupClick(this);'><a href='#'>$agroup</a></li>";
 										}
 									?>
 									</ul>
@@ -267,7 +289,10 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div id="linechart" style="width: 1500px; height: 800px;"></div>
+                            <div id="linechart" style="width: 900px; height: 500px;"></div>
+                        </div>
+                        <div class="panel-body">
+                            <button id="download" class="btn btn-primary" >Download to CSV</button>
                         </div>
                         <!-- /.panel-body -->
                     </div>

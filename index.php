@@ -93,6 +93,8 @@
 			$db->{'get_user_hours'}('austin', 'powers');
 			
 			$db->{'get_group_hours'}('dan and friends');
+      print $db->{'get_aggregate_user_hours'}();
+      print $db->{'get_aggregate_group_hours'}();
 		?>
 	</div>
 

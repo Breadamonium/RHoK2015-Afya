@@ -34,9 +34,9 @@ if(!empty($_POST['name'])) {
 			return;
 		case 'get_group_timesheet':
 			$groupname = $_POST['groupname'];
-			$startdate = $_POST['startdate'];
-			$enddate = $_POST['enddate'];
-			echo json_encode($db->{$name}($groupname, $startdate, $enddate));
+			//$startdate = $_POST['startdate'];
+			//$enddate = $_POST['enddate'];
+			echo json_encode($db->{$name}($groupname));
 			return;
 	}
 }
